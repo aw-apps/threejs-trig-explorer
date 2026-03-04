@@ -29,6 +29,7 @@
 這是純前端靜態網站，建議使用本機伺服器開啟：
 
 ```bash
+cd threejs-trig-explorer
 python3 -m http.server 8000
 ```
 
@@ -38,20 +39,26 @@ python3 -m http.server 8000
 http://localhost:8000
 ```
 
-## 測試與驗證
+## 使用方式
 
-目前以手動驗證為主（MVP）：
+1. 點擊 **Play / Pause / Step +15°** 控制角度動畫。
+2. 拖曳 3D 場景（左鍵旋轉、右鍵平移、滾輪縮放）。
+3. 使用 `Angle` 滑桿或輸入框調整角度，觀察 3D 指示器、數值面板與 2D 曲線同步變化。
+4. 切換 sin / cos / tan 顯示開關，確認對應曲線顯示/隱藏。
 
-1. 開啟 `index.html`
-2. 調整角度與播放控制，確認 3D 指示器與數值同步
-3. 切換 sin / cos / tan 顯示，確認曲線與數值正確更新
-4. 在不同視窗尺寸確認畫面可正常操作
+## 驗證清單（Issue #3）
+
+- [ ] 在瀏覽器 dev tools 測試桌機/平板寬度（例如 1366px、1024px、768px），版面仍可操作且資訊清楚。
+- [ ] 在角度輸入框輸入非法值（空值、非數字、Infinity），可看到明確錯誤訊息，且不會默默失敗。
+- [ ] 角度控制、播放控制、sin/cos/tan 切換與 2D/3D 同步行為正常。
+- [ ] 專案可直接由 root 靜態檔部署到 GitHub Pages。
 
 ## 部署
 
 - 部署目標：GitHub Pages
 - 設定方式：Repository Settings → Pages → Deploy from branch
 - 分支/目錄：`main` / `/ (root)`
+- `index.html` 位於 repository root，並直接引用 `styles/` 與 `src/` 靜態資源，符合 Pages root 部署模式。
 
 部署後網址格式：
 
