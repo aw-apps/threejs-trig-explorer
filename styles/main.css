@@ -61,6 +61,18 @@ body {
   gap: 0.5rem;
 }
 
+.toggle-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.toggle-grid label {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
 .panel input[type="range"],
 .panel input[type="number"],
 .panel button {

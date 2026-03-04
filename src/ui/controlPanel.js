@@ -10,6 +10,7 @@ export function createControlPanel({
   onStep,
   onSpeedChange,
   onAngleChangeDegrees,
+  onFunctionToggle,
 }) {
   const playToggle = document.getElementById("play-toggle");
   const stepAngle = document.getElementById("step-angle");
@@ -17,6 +18,9 @@ export function createControlPanel({
   const speedReadout = document.getElementById("speed-readout");
   const angleSlider = document.getElementById("angle-slider");
   const angleInput = document.getElementById("angle-input");
+  const toggleSin = document.getElementById("toggle-sin");
+  const toggleCos = document.getElementById("toggle-cos");
+  const toggleTan = document.getElementById("toggle-tan");
   const controlError = document.getElementById("control-error");
 
   if (
@@ -26,6 +30,9 @@ export function createControlPanel({
     !speedReadout ||
     !angleSlider ||
     !angleInput ||
+    !toggleSin ||
+    !toggleCos ||
+    !toggleTan ||
     !controlError
   ) {
     throw new Error("Control panel elements are missing.");
@@ -64,6 +71,9 @@ export function createControlPanel({
     angleSlider.value = angleInput.value;
     handleAngleInput(angleInput.value);
   });
+  toggleSin.addEventListener("change", () => onFunctionToggle("sin", toggleSin.checked));
+  toggleCos.addEventListener("change", () => onFunctionToggle("cos", toggleCos.checked));
+  toggleTan.addEventListener("change", () => onFunctionToggle("tan", toggleTan.checked));
 
   return {
     setPlaying(isPlaying) {
@@ -80,5 +90,10 @@ export function createControlPanel({
     },
     setError,
     clearError,
+    setFunctionVisibility(functionVisibility) {
+      toggleSin.checked = functionVisibility.sin;
+      toggleCos.checked = functionVisibility.cos;
+      toggleTan.checked = functionVisibility.tan;
+    },
   };
 }

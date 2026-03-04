@@ -18,5 +18,10 @@ export function createValuePanel() {
       tanReadout.textContent =
         values.tan === null ? "tan(θ): undefined" : `tan(θ): ${values.tan.toFixed(4)}`;
     },
+    setFunctionVisibility(functionVisibility) {
+      sinReadout.hidden = !functionVisibility.sin;
+      cosReadout.hidden = !functionVisibility.cos;
+      tanReadout.hidden = !functionVisibility.tan;
+    },
   };
 }

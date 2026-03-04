@@ -2,6 +2,7 @@ import { createUnitCircleScene } from "./scene/unitCircleScene.js";
 import { createAppState } from "./state/appState.js";
 import { createControlPanel } from "./ui/controlPanel.js";
 import { createValuePanel } from "./ui/valuePanel.js";
+import { createTrigPlot } from "./charts/trigPlot.js";
 import {
   calculateTrigValues,
   degreesToRadians,
@@ -17,11 +18,14 @@ if (!sceneRoot) {
 const appState = createAppState(0);
 const unitCircleScene = createUnitCircleScene(sceneRoot, appState.angle);
 const valuePanel = createValuePanel();
+const trigPlot = createTrigPlot();
+const functionVisibility = { sin: true, cos: true, tan: true };
 const controlPanel = createControlPanel({
   onTogglePlay: togglePlay,
   onStep: stepAngle,
   onSpeedChange: setSpeed,
   onAngleChangeDegrees: (angleDegrees) => setAngle(degreesToRadians(angleDegrees)),
+  onFunctionToggle: setFunctionVisibility,
 });
 
 let isPlaying = false;
@@ -33,6 +37,7 @@ const unsubscribe = appState.subscribe((angle) => {
   const values = calculateTrigValues(angle);
   valuePanel.update(values);
   controlPanel.setAngleDegrees(radiansToDegrees(angle));
+  trigPlot.setAngle(angle);
 });
 
 const FIXED_FPS = 60;
@@ -72,6 +77,12 @@ function setSpeed(nextSpeed) {
   speedMultiplier = nextSpeed;
 }
 
+function setFunctionVisibility(name, isVisible) {
+  functionVisibility[name] = isVisible;
+  valuePanel.setFunctionVisibility(functionVisibility);
+  trigPlot.setVisibility(functionVisibility);
+}
+
 window.addEventListener("resize", () => unitCircleScene.resize());
 window.addEventListener("beforeunload", () => {
   unsubscribe();
@@ -81,6 +92,9 @@ window.addEventListener("beforeunload", () => {
 unitCircleScene.resize();
 controlPanel.setPlaying(isPlaying);
 controlPanel.setSpeed(speedMultiplier);
+controlPanel.setFunctionVisibility(functionVisibility);
+valuePanel.setFunctionVisibility(functionVisibility);
+trigPlot.setVisibility(functionVisibility);
 requestAnimationFrame(animationLoop);
 
 window.trigExplorer = {
