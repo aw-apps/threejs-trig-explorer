@@ -40,6 +40,7 @@ export function createControlPanel({
 
   function setError(message) {
     controlError.textContent = message;
+    angleInput.setAttribute("aria-invalid", message ? "true" : "false");
   }
 
   function clearError() {
@@ -47,13 +48,23 @@ export function createControlPanel({
   }
 
   function handleAngleInput(value) {
-    const parsed = Number.parseFloat(value);
-    if (Number.isNaN(parsed)) {
-      setError("Please enter a valid numeric angle.");
+    const rawValue = String(value).trim();
+    if (rawValue.length === 0) {
+      setError("Angle is required.");
       return;
     }
+
+    const parsed = Number.parseFloat(value);
+    if (!Number.isFinite(parsed)) {
+      setError("Please enter a finite numeric angle.");
+      return;
+    }
+
     clearError();
-    onAngleChangeDegrees(normalizeDegrees(parsed));
+    const normalized = normalizeDegrees(parsed);
+    angleSlider.value = normalized.toFixed(1);
+    angleInput.value = normalized.toFixed(1);
+    onAngleChangeDegrees(normalized);
   }
 
   playToggle.addEventListener("click", onTogglePlay);
@@ -64,11 +75,9 @@ export function createControlPanel({
     onSpeedChange(speed);
   });
   angleSlider.addEventListener("input", () => {
-    angleInput.value = angleSlider.value;
     handleAngleInput(angleSlider.value);
   });
   angleInput.addEventListener("change", () => {
-    angleSlider.value = angleInput.value;
     handleAngleInput(angleInput.value);
   });
   toggleSin.addEventListener("change", () => onFunctionToggle("sin", toggleSin.checked));
