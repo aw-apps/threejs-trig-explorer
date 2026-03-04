@@ -50,6 +50,37 @@ body {
   margin-top: 0;
 }
 
+.control-grid {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.inline-control {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.panel input[type="range"],
+.panel input[type="number"],
+.panel button {
+  width: 100%;
+}
+
+.error-text {
+  min-height: 1.2rem;
+  margin-bottom: 0;
+  color: #ef4444;
+}
+
+#trig-plot {
+  width: 100%;
+  height: auto;
+  border: 1px solid #4a5568;
+  border-radius: 6px;
+  background: #111827;
+}
+
 @media (max-width: 900px) {
   .app-shell {
     grid-template-columns: 1fr;
