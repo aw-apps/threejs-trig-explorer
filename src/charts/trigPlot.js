@@ -52,6 +52,36 @@ export function createTrigPlot() {
     context.stroke();
   }
 
+  function drawTangentFunction() {
+    const samples = 720;
+    const asymptoteThreshold = 0.03;
+    context.strokeStyle = "#f97316";
+    context.lineWidth = 2;
+    context.beginPath();
+
+    let hasSegment = false;
+    for (let i = 0; i <= samples; i += 1) {
+      const x = (i / samples) * TWO_PI;
+      const cosValue = Math.cos(x);
+      if (Math.abs(cosValue) < asymptoteThreshold) {
+        hasSegment = false;
+        continue;
+      }
+
+      const y = Math.max(-2, Math.min(2, Math.tan(x)));
+      const canvasX = xToCanvas(x);
+      const canvasY = yToCanvas(y);
+      if (!hasSegment) {
+        context.moveTo(canvasX, canvasY);
+        hasSegment = true;
+      } else {
+        context.lineTo(canvasX, canvasY);
+      }
+    }
+
+    context.stroke();
+  }
+
   function drawCursor() {
     context.strokeStyle = "#f59e0b";
     context.lineWidth = 1.5;
@@ -71,7 +101,7 @@ export function createTrigPlot() {
       drawFunction("#3b82f6", Math.cos);
     }
     if (visible.tan) {
-      drawFunction("#f97316", Math.tan);
+      drawTangentFunction();
     }
     drawCursor();
   }
